@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MabrukPro Ventures - Document Generator</title>
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --light-gray: #ecf0f1;
+        --dark-gray: #7f8c8d;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+        margin-bottom: 30px;
+        border-radius: 5px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      .tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--dark-gray);
+      }
+
+      .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: var(--light-gray);
+        border: 1px solid var(--dark-gray);
+        border-bottom: none;
+        margin-right: 5px;
+        border-radius: 5px 5px 0 0;
+        transition: all 0.3s ease;
+      }
+
+      .tab.active {
+        background-color: var(--secondary-color);
+        color: white;
+        font-weight: bold;
+      }
+
+      .tab:hover:not(.active) {
+        background-color: #d6eaf8;
+      }
+
+      .tab-content {
+        display: none;
+        background-color: white;
+        padding: 20px;
+        border-radius: 0 0 5px 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 20px;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+      }
+
+      .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .items-table th,
+      .items-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+
+      .items-table th {
+        background-color: var(--light-gray);
+      }
+
+      .btn {
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      .btn:hover {
+        background-color: #2980b9;
+      }
+
+      .btn-danger {
+        background-color: var(--accent-color);
+      }
+
+      .btn-danger:hover {
+        background-color: #c0392b;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .document-preview {
+        margin-top: 30px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .document-preview h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        border-bottom: 2px solid var(--secondary-color);
+        padding-bottom: 10px;
+      }
+
+      .document-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+      }
+
+      .company-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .company-header h2 {
+        color: var(--primary-color);
+        margin-bottom: 5px;
+      }
+
+      .document-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .document-details table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .document-details table td {
+        padding: 8px;
+        border: 1px solid #ddd;
+      }
+
+      .document-details table tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      .signature-section {
+        margin-top: 50px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .signature-box {
+        width: 200px;
+        border-top: 1px solid #333;
+        padding-top: 5px;
+        text-align: center;
+      }
+
+      @media print {
+        body * {
+          visibility: hidden;
+        }
+        .document-preview,
+        .document-preview * {
+          visibility: visible;
+        }
+        .document-preview {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          box-shadow: none;
+        }
+        .document-actions {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .document-info {
+          flex-direction: column;
+        }
+
+        .signature-section {
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .signature-box {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>MabrukPro Ventures</h1>
+        <p>Document Generation System</p>
+      </header>
+
+      <div class="tabs">
+        <div class="tab active" data-tab="quotation">Quotation</div>
+        <div class="tab" data-tab="delivery">Delivery Order</div>
+        <div class="tab" data-tab="invoice">Invoice</div>
+      </div>
+
+      <!-- Quotation Form -->
+      <div class="tab-content active" id="quotation-form">
+        <h2>Create New Quotation</h2>
+        <form id="quotationForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="quotation-number">Quotation Number*</label>
+              <input
+                type="text"
+                id="quotation-number"
+                placeholder="QT/2025/0701"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="quotation-date">Date*</label>
+              <input type="date" id="quotation-date" required />
+            </div>
+            <div class="form-group">
+              <label for="quotation-valid">Valid Until*</label>
+              <input type="date" id="quotation-valid" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="quotation-customer-id">Customer ID</label>
+            <input
+              type="text"
+              id="quotation-customer-id"
+              placeholder="#MYV04690"
+            />
+          </div>
+
+          <h3>Customer Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="customer-name">Name*</label>
+              <input
+                type="text"
+                id="customer-name"
+                placeholder="Encik "
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="customer-phone">Phone Number</label>
+              <input
+                type="tel"
+                id="customer-phone"
+                placeholder="012-345 6789"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="customer-address">Address*</label>
+            <textarea
+              id="customer-address"
+              required
+              placeholder="Masukkan Alamat Anda..."
+            ></textarea>
+          </div>
+
+          <h3>Items</h3>
+          <table class="items-table" id="quotation-items">
+            <thead>
+              <tr>
+                <th width="50%">Description</th>
+                <th>Unit</th>
+                <th>Unit Price (RM)</th>
+                <th>Amount (RM)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    type="text"
+                    class="item-desc"
+                    placeholder="Membekal ..."
+                  />
+                </td>
+                <td>
+                  <input type="number" class="item-unit" value="1" min="1" />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="item-price"
+                    value="00.00"
+                    step="0.01"
+                    min="0"
+                  />
+                </td>
+                <td class="item-amount">00.00</td>
+                <td>
+                  <button type="button" class="btn btn-danger remove-item">
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn" id="add-quotation-item">
+            Add Item
+          </button>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="quotation-delivery">Delivery Date</label>
+              <input type="text" id="quotation-delivery" placeholder="1 week" />
+            </div>
+            <div class="form-group">
+              <label for="quotation-payment">Payment Terms</label>
+              <input
+                type="text"
+                id="quotation-payment"
+                placeholder="30 Days upon completion"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="quotation-bank">Bank Details</label>
+            <textarea
+              id="quotation-bank"
+              placeholder="Masukkan Maklumat Bank Anda..."
+            ></textarea>
+          </div>
+
+          <div class="btn-group">
+            <button type="submit" class="btn">Generate Quotation</button>
+            <button type="reset" class="btn btn-danger">Reset Form</button>
+          </div>
+        </form>
+
+        <div
+          class="document-preview"
+          id="quotation-preview"
+          style="display: none"
+        >
+          <h2>Quotation Preview</h2>
+          <div id="quotation-preview-content"></div>
+          <div class="document-actions">
+            <button class="btn" id="print-quotation">Print Quotation</button>
+            <button class="btn" id="download-quotation">Download as PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delivery Order Form -->
+      <div class="tab-content" id="delivery-form">
+        <h2>Create New Delivery Order</h2>
+        <form id="deliveryForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="delivery-number">Delivery Order Number</label>
+              <input type="text" id="delivery-number" required />
+            </div>
+            <div class="form-group">
+              <label for="delivery-date">Date</label>
+              <input type="date" id="delivery-date" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="delivery-reference">Quotation Reference</label>
+            <input
+              type="text"
+              id="delivery-reference"
+              placeholder="QT/2025/0701"
+            />
+          </div>
+
+          <h3>Customer Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="delivery-customer-name">Name</label>
+              <input type="text" id="delivery-customer-name" required />
+            </div>
+            <div class="form-group">
+              <label for="delivery-customer-phone">Phone Number</label>
+              <input type="tel" id="delivery-customer-phone" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="delivery-customer-address">Address</label>
+            <textarea id="delivery-customer-address" required></textarea>
+          </div>
+
+          <h3>Delivery Information</h3>
+          <div class="form-group">
+            <label for="delivery-address"
+              >Delivery Address (if different)</label
+            >
+            <textarea id="delivery-address"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="delivery-date-scheduled">Scheduled Date</label>
+              <input type="date" id="delivery-date-scheduled" />
+            </div>
+            <div class="form-group">
+              <label for="delivery-time">Time</label>
+              <input type="time" id="delivery-time" />
+            </div>
+          </div>
+
+          <h3>Items to Deliver</h3>
+          <table class="items-table" id="delivery-items">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Remarks</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="delivery-item-desc" /></td>
+                <td>
+                  <input
+                    type="number"
+                    class="delivery-item-qty"
+                    value="1"
+                    min="1"
+                  />
+                </td>
+                <td><input type="text" class="delivery-item-remarks" /></td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-danger remove-delivery-item"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn" id="add-delivery-item">
+            Add Item
+          </button>
+
+          <div class="form-group">
+            <label for="delivery-notes">Special Instructions</label>
+            <textarea id="delivery-notes"></textarea>
+          </div>
+
+          <div class="btn-group">
+            <button type="submit" class="btn">Generate Delivery Order</button>
+            <button type="reset" class="btn btn-danger">Reset Form</button>
+          </div>
+        </form>
+
+        <div
+          class="document-preview"
+          id="delivery-preview"
+          style="display: none"
+        >
+          <h2>Delivery Order Preview</h2>
+          <div id="delivery-preview-content"></div>
+          <div class="document-actions">
+            <button class="btn" id="print-delivery">
+              Print Delivery Order
+            </button>
+            <button class="btn" id="download-delivery">Download as PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invoice Form -->
+      <div class="tab-content" id="invoice-form">
+        <h2>Create New Invoice</h2>
+        <form id="invoiceForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="invoice-number">Invoice Number</label>
+              <input type="text" id="invoice-number" required />
+            </div>
+            <div class="form-group">
+              <label for="invoice-date">Date</label>
+              <input type="date" id="invoice-date" required />
+            </div>
+            <div class="form-group">
+              <label for="invoice-due">Due Date</label>
+              <input type="date" id="invoice-due" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="invoice-reference">Quotation Reference</label>
+              <input
+                type="text"
+                id="invoice-reference"
+                placeholder="QT/2025/0701"
+              />
+            </div>
+            <div class="form-group">
+              <label for="invoice-delivery">Delivery Order Reference</label>
+              <input type="text" id="invoice-delivery" />
+            </div>
+          </div>
+
+          <h3>Customer Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="invoice-customer-name">Name</label>
+              <input type="text" id="invoice-customer-name" required />
+            </div>
+            <div class="form-group">
+              <label for="invoice-customer-phone">Phone Number</label>
+              <input type="tel" id="invoice-customer-phone" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="invoice-customer-address">Address</label>
+            <textarea id="invoice-customer-address" required></textarea>
+          </div>
+
+          <h3>Items</h3>
+          <table class="items-table" id="invoice-items">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Unit</th>
+                <th>Unit Price (RM)</th>
+                <th>Amount (RM)</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" class="invoice-item-desc" /></td>
+                <td>
+                  <input
+                    type="number"
+                    class="invoice-item-unit"
+                    value="1"
+                    min="1"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="invoice-item-price"
+                    value="0.00"
+                    step="0.01"
+                    min="0"
+                  />
+                </td>
+                <td class="invoice-item-amount">0.00</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-danger remove-invoice-item"
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn" id="add-invoice-item">
+            Add Item
+          </button>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="invoice-subtotal">Subtotal (RM)</label>
+              <input
+                type="number"
+                id="invoice-subtotal"
+                value="0.00"
+                step="0.01"
+                min="0"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label for="invoice-tax">Tax (%)</label>
+              <input
+                type="number"
+                id="invoice-tax"
+                value="0.00"
+                step="0.01"
+                min="0"
+              />
+            </div>
+            <div class="form-group">
+              <label for="invoice-total">Total (RM)</label>
+              <input
+                type="number"
+                id="invoice-total"
+                value="0.00"
+                step="0.01"
+                min="0"
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="invoice-bank">Bank Details</label>
+            <textarea id="invoice-bank">
+Bank Islam Malaysia Berhad
+Current Account 12300010012354</textarea
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="invoice-notes">Notes</label>
+            <textarea id="invoice-notes"></textarea>
+          </div>
+
+          <div class="btn-group">
+            <button type="submit" class="btn">Generate Invoice</button>
+            <button type="reset" class="btn btn-danger">Reset Form</button>
+          </div>
+        </form>
+
+        <div
+          class="document-preview"
+          id="invoice-preview"
+          style="display: none"
+        >
+          <h2>Invoice Preview</h2>
+          <div id="invoice-preview-content"></div>
+          <div class="document-actions">
+            <button class="btn" id="print-invoice">Print Invoice</button>
+            <button class="btn" id="download-invoice">Download as PDF</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Set current date as default for all date fields
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("quotation-date").value = today;
+
+        // Set valid until date to 2 months from now
+        const futureDate = new Date();
+        futureDate.setMonth(futureDate.getMonth() + 2);
+        document.getElementById("quotation-valid").value = futureDate
+          .toISOString()
+          .split("T")[0];
+
+        document.getElementById("delivery-date").value = today;
+        document.getElementById("invoice-date").value = today;
+
+        // Set invoice due date to 30 days from now
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 30);
+        document.getElementById("invoice-due").value = dueDate
+          .toISOString()
+          .split("T")[0];
+
+        // Tab switching functionality
+        const tabs = document.querySelectorAll(".tab");
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", function () {
+            // Remove active class from all tabs and content
+            tabs.forEach((t) => t.classList.remove("active"));
+            document.querySelectorAll(".tab-content").forEach((content) => {
+              content.classList.remove("active");
+            });
+
+            // Add active class to clicked tab and corresponding content
+            this.classList.add("active");
+            const tabId = this.getAttribute("data-tab");
+            document.getElementById(`${tabId}-form`).classList.add("active");
+          });
+        });
+
+        // Quotation item calculations
+        document
+          .getElementById("quotation-items")
+          .addEventListener("input", function (e) {
+            if (
+              e.target.classList.contains("item-unit") ||
+              e.target.classList.contains("item-price")
+            ) {
+              const row = e.target.closest("tr");
+              const unit =
+                parseFloat(row.querySelector(".item-unit").value) || 0;
+              const price =
+                parseFloat(row.querySelector(".item-price").value) || 0;
+              const amount = unit * price;
+              row.querySelector(".item-amount").textContent = amount.toFixed(2);
+            }
+          });
+
+        // Add new quotation item
+        document
+          .getElementById("add-quotation-item")
+          .addEventListener("click", function () {
+            const tbody = document.querySelector("#quotation-items tbody");
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                    <td><input type="text" class="item-desc"></td>
+                    <td><input type="number" class="item-unit" value="1" min="1"></td>
+                    <td><input type="number" class="item-price" value="0.00" step="0.01" min="0"></td>
+                    <td class="item-amount">0.00</td>
+                    <td><button type="button" class="btn btn-danger remove-item">Remove</button></td>
+                `;
+            tbody.appendChild(newRow);
+          });
+
+        // Remove quotation item
+        document
+          .getElementById("quotation-items")
+          .addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-item")) {
+              if (
+                document.querySelectorAll("#quotation-items tbody tr").length >
+                1
+              ) {
+                e.target.closest("tr").remove();
+              } else {
+                alert("At least one item is required.");
+              }
+            }
+          });
+
+        // Add new delivery item
+        document
+          .getElementById("add-delivery-item")
+          .addEventListener("click", function () {
+            const tbody = document.querySelector("#delivery-items tbody");
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                    <td><input type="text" class="delivery-item-desc"></td>
+                    <td><input type="number" class="delivery-item-qty" value="1" min="1"></td>
+                    <td><input type="text" class="delivery-item-remarks"></td>
+                    <td><button type="button" class="btn btn-danger remove-delivery-item">Remove</button></td>
+                `;
+            tbody.appendChild(newRow);
+          });
+
+        // Remove delivery item
+        document
+          .getElementById("delivery-items")
+          .addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-delivery-item")) {
+              if (
+                document.querySelectorAll("#delivery-items tbody tr").length > 1
+              ) {
+                e.target.closest("tr").remove();
+              } else {
+                alert("At least one item is required.");
+              }
+            }
+          });
+
+        // Invoice item calculations
+        document
+          .getElementById("invoice-items")
+          .addEventListener("input", function (e) {
+            if (
+              e.target.classList.contains("invoice-item-unit") ||
+              e.target.classList.contains("invoice-item-price")
+            ) {
+              const row = e.target.closest("tr");
+              const unit =
+                parseFloat(row.querySelector(".invoice-item-unit").value) || 0;
+              const price =
+                parseFloat(row.querySelector(".invoice-item-price").value) || 0;
+              const amount = unit * price;
+              row.querySelector(".invoice-item-amount").textContent =
+                amount.toFixed(2);
+              calculateInvoiceTotal();
+            }
+          });
+
+        // Tax calculation
+        document
+          .getElementById("invoice-tax")
+          .addEventListener("input", calculateInvoiceTotal);
+
+        function calculateInvoiceTotal() {
+          let subtotal = 0;
+          document
+            .querySelectorAll(".invoice-item-amount")
+            .forEach((amountCell) => {
+              subtotal += parseFloat(amountCell.textContent) || 0;
+            });
+
+          document.getElementById("invoice-subtotal").value =
+            subtotal.toFixed(2);
+
+          const taxRate =
+            parseFloat(document.getElementById("invoice-tax").value) || 0;
+          const taxAmount = subtotal * (taxRate / 100);
+          const total = subtotal + taxAmount;
+
+          document.getElementById("invoice-total").value = total.toFixed(2);
+        }
+
+        // Add new invoice item
+        document
+          .getElementById("add-invoice-item")
+          .addEventListener("click", function () {
+            const tbody = document.querySelector("#invoice-items tbody");
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                    <td><input type="text" class="invoice-item-desc"></td>
+                    <td><input type="number" class="invoice-item-unit" value="1" min="1"></td>
+                    <td><input type="number" class="invoice-item-price" value="0.00" step="0.01" min="0"></td>
+                    <td class="invoice-item-amount">0.00</td>
+                    <td><button type="button" class="btn btn-danger remove-invoice-item">Remove</button></td>
+                `;
+            tbody.appendChild(newRow);
+          });
+
+        // Remove invoice item
+        document
+          .getElementById("invoice-items")
+          .addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-invoice-item")) {
+              if (
+                document.querySelectorAll("#invoice-items tbody tr").length > 1
+              ) {
+                e.target.closest("tr").remove();
+                calculateInvoiceTotal();
+              } else {
+                alert("At least one item is required.");
+              }
+            }
+          });
+
+        // Generate Quotation
+        document
+          .getElementById("quotationForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            generateQuotation();
+          });
+
+        function generateQuotation() {
+          const companyName = "MABRUKPRO VENTURES";
+          const companyAddress =
+            "G-4, Indah Square<br>Jalan Cahaya 1<br>Taman Cahaya Indah<br>68000 Ampang, SELANGOR";
+
+          const quotationNumber =
+            document.getElementById("quotation-number").value;
+          const quotationDate = formatDate(
+            document.getElementById("quotation-date").value
+          );
+          const validUntil = formatDate(
+            document.getElementById("quotation-valid").value
+          );
+          const customerId = document.getElementById(
+            "quotation-customer-id"
+          ).value;
+
+          const customerName = document.getElementById("customer-name").value;
+          const customerPhone = document.getElementById("customer-phone").value;
+          const customerAddress = document
+            .getElementById("customer-address")
+            .value.replace(/\n/g, "<br>");
+
+          const deliveryDate =
+            document.getElementById("quotation-delivery").value;
+          const paymentTerms =
+            document.getElementById("quotation-payment").value;
+          const bankDetails = document
+            .getElementById("quotation-bank")
+            .value.replace(/\n/g, "<br>");
+
+          // Build items table
+          let itemsHtml = "";
+          document
+            .querySelectorAll("#quotation-items tbody tr")
+            .forEach((row) => {
+              const desc = row.querySelector(".item-desc").value;
+              const unit = row.querySelector(".item-unit").value;
+              const price = parseFloat(
+                row.querySelector(".item-price").value
+              ).toFixed(2);
+              const amount = parseFloat(
+                row.querySelector(".item-amount").textContent
+              ).toFixed(2);
+
+              itemsHtml += `
+                        <tr>
+                            <td>${desc}</td>
+                            <td>${unit}</td>
+                            <td>${price}</td>
+                            <td>${amount}</td>
+                        </tr>
+                    `;
+            });
+
+          // Calculate total
+          let total = 0;
+          document.querySelectorAll(".item-amount").forEach((amountCell) => {
+            total += parseFloat(amountCell.textContent) || 0;
+          });
+
+          const contactPerson = "Mohd Padzil bin Abdul Aziz";
+          const contactPhone = "016-3439274";
+          const contactEmail = "mabrukproventures@gmail.com";
+
+          const quotationHtml = `
+                    <div class="company-header">
+                        <h2>${companyName}</h2>
+                        <p>${companyAddress}</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="document-info">
+                        <div>
+                            <h3>Bill To:</h3>
+                            <p>${customerName}<br>${customerAddress}<br>Phone: ${
+            customerPhone || "N/A"
+          }</p>
+                        </div>
+                        <div>
+                            <table class="document-details">
+                                <tr>
+                                    <td><strong>Question #</strong></td>
+                                    <td>${quotationNumber}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Question # Customer ID</strong></td>
+                                    <td>${customerId || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date</strong></td>
+                                    <td>${quotationDate}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Valid Until</strong></td>
+                                    <td>${validUntil}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <p>We are pleased to quote you the following:</p>
+                    
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Unit</th>
+                                <th>Unit Price</th>
+                                <th>Amount (RM)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsHtml}
+                        </tbody>
+                    </table>
+                    
+                    <div style="text-align: right; margin-top: 20px;">
+                        <h3>Total: RM ${total.toFixed(2)}</h3>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <p><strong>Delivery date:</strong> ${
+                          deliveryDate || "N/A"
+                        }</p>
+                        <p><strong>Payment terms:</strong> ${
+                          paymentTerms || "N/A"
+                        }</p>
+                        <p><strong>Bank Details:</strong><br>${bankDetails}</p>
+                    </div>
+                    
+                    <div style="margin-top: 50px; text-align: center;">
+                        <h3>THANK YOU FOR YOUR BUSINESS</h3>
+                        <p>Contact Person: ${contactPerson}<br>Phone: ${contactPhone}<br>Email: ${contactEmail}</p>
+                    </div>
+                    
+                    <p style="margin-top: 30px; font-style: italic;">
+                        * * * Sekutnarga ini adalah cetakan komputer dan tidak memerukan tandatangan dan cop syarikat.
+                    </p>
+                `;
+
+          document.getElementById("quotation-preview-content").innerHTML =
+            quotationHtml;
+          document.getElementById("quotation-preview").style.display = "block";
+        }
+
+        // Generate Delivery Order
+        document
+          .getElementById("deliveryForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            generateDeliveryOrder();
+          });
+
+        function generateDeliveryOrder() {
+          const companyName = "MABRUKPRO VENTURES";
+          const companyAddress =
+            "G-4, Indah Square<br>Jalan Cahaya 1<br>Taman Cahaya Indah<br>68000 Ampang, SELANGOR";
+
+          const deliveryNumber =
+            document.getElementById("delivery-number").value;
+          const deliveryDate = formatDate(
+            document.getElementById("delivery-date").value
+          );
+          const reference = document.getElementById("delivery-reference").value;
+
+          const customerName = document.getElementById(
+            "delivery-customer-name"
+          ).value;
+          const customerPhone = document.getElementById(
+            "delivery-customer-phone"
+          ).value;
+          const customerAddress = document
+            .getElementById("delivery-customer-address")
+            .value.replace(/\n/g, "<br>");
+
+          const deliveryAddress =
+            document
+              .getElementById("delivery-address")
+              .value.replace(/\n/g, "<br>") || customerAddress;
+          const scheduledDate = formatDate(
+            document.getElementById("delivery-date-scheduled").value
+          );
+          const deliveryTime = document.getElementById("delivery-time").value;
+          const notes = document
+            .getElementById("delivery-notes")
+            .value.replace(/\n/g, "<br>");
+
+          // Build items table
+          let itemsHtml = "";
+          document
+            .querySelectorAll("#delivery-items tbody tr")
+            .forEach((row) => {
+              const desc = row.querySelector(".delivery-item-desc").value;
+              const qty = row.querySelector(".delivery-item-qty").value;
+              const remarks = row.querySelector(".delivery-item-remarks").value;
+
+              itemsHtml += `
+                        <tr>
+                            <td>${desc}</td>
+                            <td>${qty}</td>
+                            <td>${remarks}</td>
+                        </tr>
+                    `;
+            });
+
+          const contactPerson = "Mohd Padzil bin Abdul Aziz";
+          const contactPhone = "016-3439274";
+          const contactEmail = "mabrukproventures@gmail.com";
+
+          const deliveryHtml = `
+                    <div class="company-header">
+                        <h2>${companyName}</h2>
+                        <p>${companyAddress}</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2>DELIVERY ORDER</h2>
+                        <p>No: ${deliveryNumber} | Date: ${deliveryDate}</p>
+                    </div>
+                    
+                    <div class="document-info">
+                        <div>
+                            <h3>Deliver To:</h3>
+                            <p>${customerName}<br>${deliveryAddress}<br>Phone: ${
+            customerPhone || "N/A"
+          }</p>
+                        </div>
+                        <div>
+                            <table class="document-details">
+                                <tr>
+                                    <td><strong>Reference</strong></td>
+                                    <td>${reference || "N/A"}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Scheduled Date</strong></td>
+                                    <td>${scheduledDate || "N/A"} ${
+            deliveryTime ? "at " + deliveryTime : ""
+          }</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <p>Please deliver the following items:</p>
+                    
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsHtml}
+                        </tbody>
+                    </table>
+                    
+                    ${
+                      notes
+                        ? `<p><strong>Special Instructions:</strong><br>${notes}</p>`
+                        : ""
+                    }
+                    
+                    <div class="signature-section">
+                        <div class="signature-box">
+                            <p>Prepared By</p>
+                        </div>
+                        <div class="signature-box">
+                            <p>Received By</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 50px; text-align: center;">
+                        <p>Contact Person: ${contactPerson}<br>Phone: ${contactPhone}<br>Email: ${contactEmail}</p>
+                    </div>
+                `;
+
+          document.getElementById("delivery-preview-content").innerHTML =
+            deliveryHtml;
+          document.getElementById("delivery-preview").style.display = "block";
+        }
+
+        // Generate Invoice
+        document
+          .getElementById("invoiceForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+            generateInvoice();
+          });
+
+        function generateInvoice() {
+          const companyName = "MABRUKPRO VENTURES";
+          const companyAddress =
+            "G-4, Indah Square<br>Jalan Cahaya 1<br>Taman Cahaya Indah<br>68000 Ampang, SELANGOR";
+
+          const invoiceNumber = document.getElementById("invoice-number").value;
+          const invoiceDate = formatDate(
+            document.getElementById("invoice-date").value
+          );
+          const dueDate = formatDate(
+            document.getElementById("invoice-due").value
+          );
+          const reference = document.getElementById("invoice-reference").value;
+          const deliveryRef = document.getElementById("invoice-delivery").value;
+
+          const customerName = document.getElementById(
+            "invoice-customer-name"
+          ).value;
+          const customerPhone = document.getElementById(
+            "invoice-customer-phone"
+          ).value;
+          const customerAddress = document
+            .getElementById("invoice-customer-address")
+            .value.replace(/\n/g, "<br>");
+
+          const bankDetails = document
+            .getElementById("invoice-bank")
+            .value.replace(/\n/g, "<br>");
+          const notes = document
+            .getElementById("invoice-notes")
+            .value.replace(/\n/g, "<br>");
+
+          // Build items table
+          let itemsHtml = "";
+          document
+            .querySelectorAll("#invoice-items tbody tr")
+            .forEach((row) => {
+              const desc = row.querySelector(".invoice-item-desc").value;
+              const unit = row.querySelector(".invoice-item-unit").value;
+              const price = parseFloat(
+                row.querySelector(".invoice-item-price").value
+              ).toFixed(2);
+              const amount = parseFloat(
+                row.querySelector(".invoice-item-amount").textContent
+              ).toFixed(2);
+
+              itemsHtml += `
+                        <tr>
+                            <td>${desc}</td>
+                            <td>${unit}</td>
+                            <td>${price}</td>
+                            <td>${amount}</td>
+                        </tr>
+                    `;
+            });
+
+          const subtotal = parseFloat(
+            document.getElementById("invoice-subtotal").value
+          );
+          const taxRate =
+            parseFloat(document.getElementById("invoice-tax").value) || 0;
+          const taxAmount = subtotal * (taxRate / 100);
+          const total = subtotal + taxAmount;
+
+          const contactPerson = "Mohd Padzil bin Abdul Aziz";
+          const contactPhone = "016-3439274";
+          const contactEmail = "mabrukproventures@gmail.com";
+
+          const invoiceHtml = `
+                    <div class="company-header">
+                        <h2>${companyName}</h2>
+                        <p>${companyAddress}</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2>INVOICE</h2>
+                        <p>No: ${invoiceNumber} | Date: ${invoiceDate}</p>
+                    </div>
+                    
+                    <div class="document-info">
+                        <div>
+                            <h3>Bill To:</h3>
+                            <p>${customerName}<br>${customerAddress}<br>Phone: ${
+            customerPhone || "N/A"
+          }</p>
+                        </div>
+                        <div>
+                            <table class="document-details">
+                                <tr>
+                                    <td><strong>Due Date</strong></td>
+                                    <td>${dueDate}</td>
+                                </tr>
+                                ${
+                                  reference
+                                    ? `<tr><td><strong>Reference</strong></td><td>${reference}</td></tr>`
+                                    : ""
+                                }
+                                ${
+                                  deliveryRef
+                                    ? `<tr><td><strong>Delivery Ref</strong></td><td>${deliveryRef}</td></tr>`
+                                    : ""
+                                }
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Unit</th>
+                                <th>Unit Price</th>
+                                <th>Amount (RM)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsHtml}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="text-align: right;"><strong>Subtotal</strong></td>
+                                <td><strong>RM ${subtotal.toFixed(
+                                  2
+                                )}</strong></td>
+                            </tr>
+                            ${
+                              taxRate > 0
+                                ? `
+                            <tr>
+                                <td colspan="3" style="text-align: right;"><strong>Tax (${taxRate}%)</strong></td>
+                                <td><strong>RM ${taxAmount.toFixed(
+                                  2
+                                )}</strong></td>
+                            </tr>
+                            `
+                                : ""
+                            }
+                            <tr>
+                                <td colspan="3" style="text-align: right;"><strong>Total</strong></td>
+                                <td><strong>RM ${total.toFixed(2)}</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    <div style="margin-top: 30px;">
+                        <p><strong>Bank Details:</strong><br>${bankDetails}</p>
+                        ${
+                          notes
+                            ? `<p><strong>Notes:</strong><br>${notes}</p>`
+                            : ""
+                        }
+                    </div>
+                    
+                    <div class="signature-section">
+                        <div class="signature-box">
+                            <p>Prepared By</p>
+                        </div>
+                        <div class="signature-box">
+                            <p>Authorized Signature</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 50px; text-align: center;">
+                        <p>Contact Person: ${contactPerson}<br>Phone: ${contactPhone}<br>Email: ${contactEmail}</p>
+                    </div>
+                `;
+
+          document.getElementById("invoice-preview-content").innerHTML =
+            invoiceHtml;
+          document.getElementById("invoice-preview").style.display = "block";
+        }
+
+        // Print functions
+        document
+          .getElementById("print-quotation")
+          .addEventListener("click", function () {
+            window.print();
+          });
+
+        document
+          .getElementById("print-delivery")
+          .addEventListener("click", function () {
+            window.print();
+          });
+
+        document
+          .getElementById("print-invoice")
+          .addEventListener("click", function () {
+            window.print();
+          });
+
+        // Download as PDF functions (would need a library like jsPDF in a real implementation)
+        document
+          .getElementById("download-quotation")
+          .addEventListener("click", function () {
+            alert(
+              "In a real implementation, this would download the quotation as PDF using a library like jsPDF"
+            );
+          });
+
+        document
+          .getElementById("download-delivery")
+          .addEventListener("click", function () {
+            alert(
+              "In a real implementation, this would download the delivery order as PDF using a library like jsPDF"
+            );
+          });
+
+        document
+          .getElementById("download-invoice")
+          .addEventListener("click", function () {
+            alert(
+              "In a real implementation, this would download the invoice as PDF using a library like jsPDF"
+            );
+          });
+
+        // Helper function to format date
+        function formatDate(dateString) {
+          if (!dateString) return "";
+          const date = new Date(dateString);
+          return date.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+        }
+
+        // Auto-fill customer data from quotation to other forms
+        document
+          .getElementById("customer-name")
+          .addEventListener("change", function () {
+            document.getElementById("delivery-customer-name").value =
+              this.value;
+            document.getElementById("invoice-customer-name").value = this.value;
+          });
+
+        document
+          .getElementById("customer-phone")
+          .addEventListener("change", function () {
+            document.getElementById("delivery-customer-phone").value =
+              this.value;
+            document.getElementById("invoice-customer-phone").value =
+              this.value;
+          });
+
+        document
+          .getElementById("customer-address")
+          .addEventListener("change", function () {
+            document.getElementById("delivery-customer-address").value =
+              this.value;
+            document.getElementById("invoice-customer-address").value =
+              this.value;
+          });
+
+        document
+          .getElementById("quotation-number")
+          .addEventListener("change", function () {
+            document.getElementById("delivery-reference").value = this.value;
+            document.getElementById("invoice-reference").value = this.value;
+          });
+      });
+    </script>
+  </body>
+</html>
