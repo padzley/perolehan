@@ -5,6 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MabrukPro Ventures - Document Generator</title>
     <style>
+      <!--In the CSS section, add these styles: --> .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .logo-box {
+        width: 80px;
+        height: 80px;
+        border: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        padding: 5px;
+      }
+
+      .logo-placeholder {
+        text-align: center;
+        color: var(--dark-gray);
+        font-size: 12px;
+      }
+
+      .company-info {
+        text-align: left;
+      }
+
+      @media (max-width: 600px) {
+        .header-container {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .company-info {
+          text-align: center;
+        }
+      }
       :root {
         --primary-color: #2c3e50;
         --secondary-color: #3498db;
@@ -270,11 +308,28 @@
     </style>
   </head>
   <body>
-    <div class="container">
+    <!-- <div class="container">
       <header>
         <h1>MabrukPro Ventures</h1>
         <p>Document Generation System</p>
-      </header>
+      </header> -->
+
+      <header>
+    <div class="container">
+        <table class="header-table">
+            <tr>
+                <td class="logo-cell">
+                    <!-- <img src="images/mpro.png" alt="MabrukPro Ventures Logo" class="logo-img"> -->
+                     <img src="images/mpro.png" alt="MabrukPro Ventures Logo" style="max-width: 60%; max-height: 60%;">
+                </td>
+                <td class="company-info-cell">
+                    <h1>MabrukPro Ventures</h1>
+                    <p>Document Generation System</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
 
       <div class="tabs">
         <div class="tab active" data-tab="quotation">Quotation</div>
@@ -993,15 +1048,22 @@ Current Account 12300010012354</textarea
           const contactPhone = "016-3439274";
           const contactEmail = "mabrukproventures@gmail.com";
 
+          // const quotationHtml = `
+          //           <div class="company-header">
+          //               <h2>${companyName}</h2>
+          //               <p>${companyAddress}</p>
+          //           </div>
           const quotationHtml = `
-                    <div class="company-header">
-                        <h2>${companyName}</h2>
-                        <p>${companyAddress}</p>
-                    </div>
+                        <div class="company-header" style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                            <div style="width: 80px; height: 80px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center;">
+                            [LOGO]
+                        </div>
+                        <div>
+                            <h2>${companyName}</h2>
+                            <p>${companyAddress}</p>
+                        <hr>
                     
-                    <hr>
-                    
-                    <div class="document-info">
+                       <div class="document-info">
                         <div>
                             <h3>Bill To:</h3>
                             <p>${customerName}<br>${customerAddress}<br>Phone: ${
